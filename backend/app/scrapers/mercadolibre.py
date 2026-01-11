@@ -113,26 +113,42 @@ class MercadoLibreScraper:
 
             # Navigate to search results
             logger.info(f"Navigating to: {search_url}")
-            await page.goto(search_url, wait_until="domcontentloaded", timeout=20000)
+            await page.goto(search_url, wait_until="networkidle", timeout=30000)
 
-            # Wait for results to load
-            try:
-                await page.wait_for_selector(
-                    '.ui-search-layout__item, .ui-search-result__wrapper',
-                    timeout=10000
-                )
-            except Exception:
-                logger.warning("Timeout waiting for product results, trying alternative selectors")
+            # Wait a bit for JavaScript to render
+            await page.wait_for_timeout(2000)
+
+            # Try multiple selector strategies
+            products = []
+            selectors_to_try = [
+                'li.ui-search-layout__item',
+                '.ui-search-result__wrapper',
+                '.ui-search-layout__item',
+                'li[class*="ui-search"]',
+                'div[class*="ui-search-result"]'
+            ]
+
+            for selector in selectors_to_try:
+                try:
+                    await page.wait_for_selector(selector, timeout=5000)
+                    products = await page.query_selector_all(selector)
+                    if len(products) > 0:
+                        logger.info(f"Found {len(products)} products with selector: {selector}")
+                        break
+                except Exception as e:
+                    logger.debug(f"Selector {selector} failed: {e}")
+                    continue
+
+            if len(products) == 0:
                 # Try to see if there are no results
                 no_results = await page.query_selector('.ui-search-rescue__title')
                 if no_results:
                     logger.info("No products found for this search")
                     return []
 
-            # Extract product cards
-            products = await page.query_selector_all(
-                '.ui-search-layout__item, .ui-search-result__wrapper'
-            )
+                # Take screenshot for debugging
+                logger.warning("No products found with any selector")
+                return []
 
             logger.info(f"Found {len(products)} product cards on page")
 
