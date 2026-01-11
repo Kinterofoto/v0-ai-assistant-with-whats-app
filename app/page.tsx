@@ -6,6 +6,7 @@ import { StatsDisplay } from "@/components/stats-display"
 import { ConversationPreview } from "@/components/conversation-preview"
 import { HowItWorks } from "@/components/how-it-works"
 import { Footer } from "@/components/footer"
+import { LiveSearchSection } from "@/components/live-search-section"
 import { Search, Bell, TrendingDown, Zap, Shield, Clock } from "lucide-react"
 
 export default function Home() {
@@ -81,6 +82,9 @@ export default function Home() {
             <StatsDisplay />
           </div>
         </section>
+
+        {/* Live Search Section */}
+        <LiveSearchSection />
 
         {/* Features Section */}
         <section className="py-20 px-4">
