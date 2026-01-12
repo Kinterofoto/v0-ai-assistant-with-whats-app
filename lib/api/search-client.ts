@@ -69,16 +69,16 @@ export interface ErrorResponse {
 }
 
 /**
- * Search for products on Mercado Libre Colombia.
+ * Search for products on Mercado Libre Colombia using the new Firecrawl endpoint.
  *
  * @param query - Natural language product search query
- * @param userId - Optional user identifier
+ * @param userId - Optional user identifier (not used in new endpoint)
  * @returns Search response with product results
  * @throws Error if search fails
  *
  * @example
  * ```typescript
- * const results = await searchProducts("Busco laptop para programar menos de 2 millones");
+ * const results = await searchProducts("iPhone 15");
  * console.log(`Found ${results.total_found} products`);
  * ```
  */
@@ -86,23 +86,46 @@ export async function searchProducts(
   query: string,
   userId?: string
 ): Promise<SearchResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/search`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      user_id: userId,
-    }),
-  });
+  const startTime = Date.now();
+
+  // Convert query to URL-friendly format (replace spaces with hyphens)
+  const urlQuery = query.toLowerCase().trim().replace(/\s+/g, '-');
+
+  // Use the new Next.js API endpoint with Firecrawl
+  const response = await fetch(`/api/scrape?output_busqueda=${encodeURIComponent(urlQuery)}`);
 
   if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.detail || error.error || 'Search failed');
+    const error = await response.json();
+    throw new Error(error.details || error.error || 'Search failed');
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // Transform the new API response to match the old SearchResponse format
+  const transformedResponse: SearchResponse = {
+    success: data.success,
+    query: query,
+    structured_request: {
+      product_name: query,
+      condition: 'any' as ProductCondition,
+      num_results: data.count || 10,
+    },
+    results: data.products.map((product: any) => ({
+      title: product.name,
+      price: 0, // Price not available in new endpoint
+      currency: 'COP',
+      condition: 'Nuevo',
+      thumbnail: undefined,
+      url: product.url,
+      free_shipping: false,
+      location: undefined,
+    })),
+    total_found: data.count,
+    execution_time_ms: Date.now() - startTime,
+    timestamp: new Date().toISOString(),
+  };
+
+  return transformedResponse;
 }
 
 /**
