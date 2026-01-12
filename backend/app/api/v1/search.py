@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from app.models.requests import SearchRequest
 from app.models.responses import SearchResponse, ErrorResponse, ProductResult
 from app.services.openai_service import OpenAIService
-from app.scrapers.mercadolibre import get_scraper
+from app.scrapers.mercadolibre_api import get_api_client
 from app.core.logger import get_logger
 from app.core.errors import handle_scraper_error, handle_openai_error, ScraperException, OpenAIException
 import time
@@ -71,14 +71,14 @@ async def search_products(request: SearchRequest):
             f"num_results={structured_request.num_results}"
         )
 
-        # Step 2: Scrape Mercado Libre
-        scraper = await get_scraper()
-        results = await scraper.scrape_products(structured_request)
+        # Step 2: Search using Mercado Libre official API
+        api_client = await get_api_client()
+        results = await api_client.search_products(structured_request)
 
-        # Fallback to demo data if no results (anti-bot protection)
-        use_demo = os.getenv("USE_DEMO_DATA", "true").lower() == "true"
+        # Fallback to demo data if no results
+        use_demo = os.getenv("USE_DEMO_DATA", "false").lower() == "true"
         if len(results) == 0 and use_demo:
-            logger.warning("No products found from scraping, using demo data")
+            logger.warning("No products found from API, using demo data")
             results = get_demo_products(
                 structured_request.product_name,
                 structured_request.num_results

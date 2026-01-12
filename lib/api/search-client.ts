@@ -129,11 +129,24 @@ export async function searchProducts(
 }
 
 /**
- * Check API health status.
- *
- * @returns Health status object
- * @throws Error if health check fails
+ * Stream search for products on Mercado Libre Colombia.
+ * Calls the streaming extraction endpoint.
  */
+export async function streamSearch(query: string) {
+  const urlQuery = query.toLowerCase().trim().replace(/\s+/g, '-');
+  const response = await fetch('/api/scrape-stream', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: urlQuery }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.details || error.error || 'Search failed');
+  }
+
+  return response;
+}
 export async function checkHealth(): Promise<{
   status: string;
   version: string;

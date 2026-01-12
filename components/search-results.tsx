@@ -1,5 +1,6 @@
 'use client'
 
+import { TerminalLoader } from '@/components/terminal-loader'
 import { ProductCard } from '@/components/product-card'
 import { type SearchResponse } from '@/lib/api/search-client'
 import { Package, Clock, TrendingUp } from 'lucide-react'
@@ -11,18 +12,7 @@ interface SearchResultsProps {
 
 export function SearchResults({ results, loading }: SearchResultsProps) {
   if (loading) {
-    return (
-      <div className="w-full py-20 flex flex-col items-center justify-center space-y-4">
-        <div className="relative">
-          {/* Animated spinner */}
-          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-        </div>
-        <div className="text-center space-y-2">
-          <p className="text-foreground font-mono">Buscando en Mercado Libre...</p>
-          <p className="text-sm text-muted-foreground font-mono">Analizando productos</p>
-        </div>
-      </div>
-    )
+    return <TerminalLoader />
   }
 
   if (!results) {

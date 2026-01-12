@@ -8,9 +8,9 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "BUSCADOR | Tu agente de productos con IA",
+  title: "MELI HUNTER | Tu agente de productos con IA",
   description:
-    "Consulta cualquier producto por WhatsApp. Recibe alertas de precios, comparativas y las mejores ofertas.",
+    "Busca cualquier producto en Mercado Libre con el poder de la IA. Encuentra las mejores ofertas y comparativas al instante.",
   generator: "v0.app",
   icons: {
     icon: [

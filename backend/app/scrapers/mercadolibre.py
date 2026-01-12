@@ -1,5 +1,6 @@
 from typing import List, Optional
 from playwright.async_api import async_playwright, Page, Browser, Playwright
+from playwright_stealth import Stealth
 from app.models.responses import ProductResult
 from app.models.requests import ExtractedProductRequest, ProductCondition
 from app.core.logger import get_logger
@@ -9,6 +10,12 @@ import asyncio
 import re
 
 logger = get_logger(__name__)
+
+# Initialize stealth configuration
+stealth_config = Stealth(
+    navigator_languages_override=('es-CO', 'es', 'en'),
+    navigator_user_agent_override='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+)
 
 
 class MercadoLibreScraper:
@@ -106,17 +113,33 @@ class MercadoLibreScraper:
         page = await self.browser.new_page()
 
         try:
-            # Set user agent to avoid detection
+            # Apply stealth mode to avoid detection
+            await stealth_config.apply_stealth_async(page)
+
+            # Set realistic viewport
+            await page.set_viewport_size({"width": 1920, "height": 1080})
+
+            # Set comprehensive headers to look more like a real browser
             await page.set_extra_http_headers({
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language': 'es-CO,es;q=0.9,en;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'DNT': '1',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Cache-Control': 'max-age=0'
             })
 
             # Navigate to search results
             logger.info(f"Navigating to: {search_url}")
-            await page.goto(search_url, wait_until="networkidle", timeout=30000)
+            await page.goto(search_url, wait_until="domcontentloaded", timeout=30000)
 
-            # Wait a bit for JavaScript to render
-            await page.wait_for_timeout(2000)
+            # Wait for content to load
+            await page.wait_for_timeout(3000)
 
             # Try multiple selector strategies
             products = []

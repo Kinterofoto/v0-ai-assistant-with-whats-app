@@ -24,7 +24,7 @@ export function TerminalHeader() {
             <div className="h-3 w-3 rounded-full bg-green-500/80" />
           </div>
           <span className="text-muted-foreground">
-            halcon<span className="text-primary">@</span>mercadolibre:~
+            meli-hunter<span className="text-primary">@</span>mercadolibre:~
           </span>
         </div>
         <div className="flex items-center gap-6 text-muted-foreground">
