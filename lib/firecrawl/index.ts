@@ -1,7 +1,6 @@
 import Firecrawl from '@mendable/firecrawl-js';
 
-const firecrawl = new Firecrawl({ apiKey: "fc-a1bf0485126640c7b3322538f0ef0ca2" });
-
+const firecrawl = new Firecrawl({ apiKey: process.env.FIRECRAWL_API_KEY });
 
 export async function scrape(input: string): Promise<string> {
   const response = await firecrawl.scrape(`https://listado.mercadolibre.com.co/${input}`, {
