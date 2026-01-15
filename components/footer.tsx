@@ -13,6 +13,9 @@ export function Footer() {
             <span className="text-terminal-green">{"●"} Conectado a MELI</span>
           </div>
         </div>
+        <div className="text-center mt-4 font-mono text-xs text-muted-foreground">
+          made in ship or sink
+        </div>
       </div>
     </footer>
   )
