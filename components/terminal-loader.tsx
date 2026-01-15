@@ -31,11 +31,6 @@ export function TerminalLoader() {
     return (
         <div className="w-full max-w-2xl mx-auto font-mono text-xs md:text-sm space-y-2 py-10 bg-black/50 p-6 border border-white/5">
             <div className="flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
-                <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                </div>
                 <span className="text-white/30 uppercase tracking-widest text-[10px]">Processing Extraction</span>
             </div>
 
