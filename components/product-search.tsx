@@ -87,7 +87,7 @@ export function ProductSearch({ onResults, onLoading }: ProductSearchProps) {
   }
 
   const quickSearches = [
-    'iPhone 15',
+    'Xiaomi',
     'Laptop para programar',
     'PlayStation 5',
     'Audífonos inalámbricos',
