@@ -14,10 +14,10 @@ export function LiveSearchSection() {
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12 space-y-4">
           <div className="flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground uppercase tracking-widest">
-            <span className="h-2 w-2 rounded-full bg-[#FFD700] animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[#FF0000] animate-pulse" />
             System Status: Ready to Hunt
           </div>
-          <h2 className="text-3xl md:text-5xl font-mono font-bold tracking-tight text-[#FFD700] uppercase">
+          <h2 className="text-3xl md:text-5xl font-mono font-bold tracking-tight text-[#FF0000] uppercase">
             [Start_Search]<span className="cursor-blink">_</span>
           </h2>
           <p className="text-muted-foreground font-mono text-xs max-w-2xl mx-auto pt-2 opacity-60">

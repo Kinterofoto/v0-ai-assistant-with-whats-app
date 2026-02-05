@@ -101,7 +101,7 @@ export function ProductSearch({ onResults, onLoading }: ProductSearchProps) {
     <div className="w-full max-w-3xl mx-auto space-y-4">
       <form onSubmit={handleSearch} className="relative">
         <div className="relative group">
-          <div className="absolute -inset-[1px] bg-[#FFD700] opacity-0 group-focus-within:opacity-100 transition-opacity duration-200" />
+          <div className="absolute -inset-[1px] bg-[#FF0000] opacity-0 group-focus-within:opacity-100 transition-opacity duration-200" />
 
           <div className="relative bg-black border border-white/10 rounded-none overflow-hidden">
             <input
@@ -142,7 +142,7 @@ export function ProductSearch({ onResults, onLoading }: ProductSearchProps) {
             key={search}
             onClick={() => handleQuickSearch(search)}
             disabled={isLoading}
-            className="px-3 py-1 text-xs font-mono bg-transparent border border-white/10 rounded-none hover:border-[#FFD700] hover:text-[#FFD700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1 text-xs font-mono bg-transparent border border-white/10 rounded-none hover:border-[#FF0000] hover:text-[#FF0000] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {search}
           </button>
