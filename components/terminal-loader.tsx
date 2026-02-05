@@ -36,10 +36,10 @@ export function TerminalLoader() {
 
             {logs.map((log, i) => (
                 <div key={i} className="flex gap-3 animate-in fade-in slide-in-from-left-2 duration-300">
-                    <span className="text-[#FFD700] shrink-0">{">"}</span>
+                    <span className="text-[#FF0000] shrink-0">{">"}</span>
                     <span className={i === logs.length - 1 ? "text-white" : "text-white/50"}>
                         {log}
-                        {i === logs.length - 1 && <span className="inline-block w-2 h-4 ml-1 bg-[#FFD700] animate-pulse align-middle" />}
+                        {i === logs.length - 1 && <span className="inline-block w-2 h-4 ml-1 bg-[#FF0000] animate-pulse align-middle" />}
                     </span>
                 </div>
             ))}
