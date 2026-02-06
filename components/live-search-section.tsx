@@ -17,7 +17,7 @@ export function LiveSearchSection() {
             <span className="h-2 w-2 rounded-full bg-[#FF0000] animate-pulse" />
             System Status: Ready to Hunt
           </div>
-          <h2 className="text-3xl md:text-5xl font-mono font-bold tracking-tight text-[#FF0000] uppercase">
+          <h2 className="text-3xl md:text-5xl font-mono font-bold tracking-tight text-[#FACC15] uppercase">
             [Start_Search]<span className="cursor-blink">_</span>
           </h2>
           <p className="text-muted-foreground font-mono text-xs max-w-2xl mx-auto pt-2 opacity-60">
